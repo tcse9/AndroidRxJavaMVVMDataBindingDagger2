@@ -17,9 +17,10 @@ public class NetworkModule {
     private Retrofit retrofit;
 
 
+
     @Singleton
     @Provides
-    public  NetworkModule getInstance(){
+    public  NetworkModule getClient(){
 
         if(retrofit==null){
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -34,10 +35,11 @@ public class NetworkModule {
 
         }
 
-        return new NetworkModule();
+        return this;
     }
 
-
+    @Singleton
+    @Provides
     public Retrofit getRetrofit() {
         return retrofit;
     }

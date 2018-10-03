@@ -25,7 +25,7 @@ public class RepositoryModule {
 
     private final CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<Content>> contentList = new MutableLiveData<>();
-    private NetworkClient networkClient = new NetworkClient();
+    private NetworkClient networkClient;
 
 
 
@@ -35,6 +35,7 @@ public class RepositoryModule {
     @Singleton
     @Provides
     public RepositoryModule invokeApiContentList(){
+        networkClient = new NetworkClient();
 
         NetworkInterface networkInterface = networkClient.getRetrofit().create(NetworkInterface.class);
 

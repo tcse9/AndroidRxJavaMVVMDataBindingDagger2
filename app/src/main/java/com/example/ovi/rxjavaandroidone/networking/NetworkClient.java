@@ -21,7 +21,7 @@ public class NetworkClient {
     }
 
     public Retrofit getRetrofit(){
-        return networkModule.getRetrofit();
+        return networkModule.getClient().getRetrofit();
     }
 
 
