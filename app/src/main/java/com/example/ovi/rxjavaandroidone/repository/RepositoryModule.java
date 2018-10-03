@@ -1,5 +1,6 @@
 package com.example.ovi.rxjavaandroidone.repository;
 
+
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
@@ -9,50 +10,40 @@ import com.example.ovi.rxjavaandroidone.networking.NetworkInterface;
 
 import java.util.List;
 
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class Repository {
+@Module
+public class RepositoryModule {
 
 
     private final CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<Content>> contentList = new MutableLiveData<>();
-    private static Repository instance;
+    private NetworkClient networkClient = new NetworkClient();
 
-    /**
-     * Private constructor
-     */
-    private Repository(){
-
-    }
-
-
-    /**
-     * Instantiate an instance of {@link Repository} as SingleTone
-     * @return
-     */
-    public static Repository getInstance(){
-        if(instance == null){
-            instance = new Repository();
-        }
-
-        return instance;
-    }
 
 
     /**
      * This method fetches data from server using RxJava and Retrofit
      */
-    public void invokeApiContentList(){
+    @Singleton
+    @Provides
+    public RepositoryModule invokeApiContentList(){
 
-        NetworkInterface networkInterface = NetworkClient.getInstance().getRetrofit().create(NetworkInterface.class);
+        NetworkInterface networkInterface = networkClient.getRetrofit().create(NetworkInterface.class);
 
         disposables.add(networkInterface.getContent()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(getObserver()));
+
+        return this;
 
     }
 
@@ -85,6 +76,8 @@ public class Repository {
      * Retunds a live data containing {@link Content} list
      * @return
      */
+    @Singleton
+    @Provides
     public MutableLiveData<List<Content>> getContentListLiveData() {
         return contentList;
     }

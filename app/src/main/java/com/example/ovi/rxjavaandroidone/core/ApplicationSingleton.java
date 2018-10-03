@@ -14,6 +14,10 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.example.ovi.rxjavaandroidone.BuildConfig;
+import com.example.ovi.rxjavaandroidone.components.BaseComponents;
+import com.example.ovi.rxjavaandroidone.components.DaggerBaseComponents;
+import com.example.ovi.rxjavaandroidone.networking.NetworkModule;
+import com.example.ovi.rxjavaandroidone.repository.RepositoryModule;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,6 +34,9 @@ public class ApplicationSingleton extends MultiDexApplication {
 
     private static ApplicationSingleton sInstance;
     private SharedPreferences mPref;
+    private BaseComponents baseComponents;
+
+
     public static ApplicationSingleton getInstance() {
         return sInstance;
     }
@@ -56,6 +63,9 @@ public class ApplicationSingleton extends MultiDexApplication {
 
         //initializing the application preference file with MODE_PRIVATE
         mPref = this.getApplicationContext().getSharedPreferences(BuildConfig.APPLICATION_ID + "_pref", MODE_PRIVATE);
+
+        baseComponents = DaggerBaseComponents.builder().repositoryModule(new RepositoryModule()).networkModule(new NetworkModule()).build();
+
     }
 
     public SharedPreferences getSharedPreference() {
@@ -210,6 +220,7 @@ public class ApplicationSingleton extends MultiDexApplication {
         }
     }
 
-
-
+    public BaseComponents getBaseComponents() {
+        return baseComponents;
+    }
 }

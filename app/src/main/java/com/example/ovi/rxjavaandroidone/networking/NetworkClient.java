@@ -1,55 +1,28 @@
 package com.example.ovi.rxjavaandroidone.networking;
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.example.ovi.rxjavaandroidone.core.ApplicationSingleton;
 
-import okhttp3.OkHttpClient;
+import javax.inject.Inject;
+
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkClient {
 
 
-    public static Retrofit retrofit;
-    private static NetworkClient instance;
+    @Inject
+    NetworkModule networkModule;
 
     /**
      * Private constructor for SingleTon purpose uses
      */
-    private void NetworkClient(){
+    public NetworkClient(){
+        ApplicationSingleton.getInstance().getBaseComponents().inject(this);
 
     }
 
-    /**
-     * Instantiate an instance of {@link NetworkClient}
-     * @return
-     */
-    public static NetworkClient getInstance(){
-        if(instance == null)
-            instance = new NetworkClient();
-
-        return instance;
+    public Retrofit getRetrofit(){
+        return networkModule.getRetrofit();
     }
 
 
-    /**
-     * Returns a Retrofit api client
-      * @return
-     */
-    public  Retrofit getRetrofit(){
-
-        if(retrofit==null){
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            OkHttpClient okHttpClient = builder.build();
-
-            retrofit = new Retrofit.Builder()
-                    .baseUrl("https://jsonplaceholder.typicode.com")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(okHttpClient)
-                    .build();
-
-        }
-
-        return retrofit;
-    }
 }

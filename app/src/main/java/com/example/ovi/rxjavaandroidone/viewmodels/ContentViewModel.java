@@ -4,13 +4,18 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.example.ovi.rxjavaandroidone.repository.Repository;
+import com.example.ovi.rxjavaandroidone.core.ApplicationSingleton;
 import com.example.ovi.rxjavaandroidone.models.Content;
+import com.example.ovi.rxjavaandroidone.repository.RepositoryModule;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class ContentViewModel extends AndroidViewModel {
 
+    @Inject
+    RepositoryModule repositoryModule;
 
     /**
      * View model constructor
@@ -18,6 +23,9 @@ public class ContentViewModel extends AndroidViewModel {
      */
     public ContentViewModel (Application application){
         super(application);
+
+        ApplicationSingleton.getInstance().getBaseComponents().inject(this);
+
         init();
 
     }
@@ -26,7 +34,7 @@ public class ContentViewModel extends AndroidViewModel {
      * Initialization i.e. primary works
      */
     private void init(){
-        Repository.getInstance().invokeApiContentList();
+        repositoryModule.invokeApiContentList();
     }
 
 
@@ -35,7 +43,8 @@ public class ContentViewModel extends AndroidViewModel {
      * @return
      */
     public MutableLiveData<List<Content>> getContentList() {
-        return Repository.getInstance().getContentListLiveData();
+
+        return repositoryModule.getContentListLiveData();
     }
 
 
