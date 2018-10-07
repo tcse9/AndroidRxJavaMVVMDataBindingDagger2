@@ -13,12 +13,18 @@ public class NetworkClient {
     NetworkModule networkModule;
 
     /**
-     * Private constructor for SingleTon purpose uses
+     * Constructor
      */
     public NetworkClient(){
+        //Injecting NetworkModule
         ApplicationSingleton.getInstance().getBaseComponents().inject(this);
 
     }
+
+    /**
+     * Returns the Retrofit client
+     * @return
+     */
 
     public Retrofit getRetrofit(){
         return networkModule.getClient().getRetrofit();

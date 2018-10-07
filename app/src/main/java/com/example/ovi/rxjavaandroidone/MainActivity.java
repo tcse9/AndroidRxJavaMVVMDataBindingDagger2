@@ -27,9 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Initialize dagger
-        //ApplicationSingleton.getClient().getBaseComponents().inject(this);
-
         //Initializing data binding
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_root);
         uiManager = new UiManager();

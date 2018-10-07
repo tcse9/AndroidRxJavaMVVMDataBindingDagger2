@@ -24,6 +24,7 @@ public class ContentViewModel extends AndroidViewModel {
     public ContentViewModel (Application application){
         super(application);
 
+        //Ijects RepositoryModule
         ApplicationSingleton.getInstance().getBaseComponents().inject(this);
 
         init();
